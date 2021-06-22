@@ -1,6 +1,6 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
-# MarxManager Changelog
+# MarxMan Changelog
 
 ## [Unreleased]
 ### Added

@@ -1,19 +1,36 @@
 <idea-plugin>
-    <id>com.github.mrmaniacc.marxmanager</id>
-    <name>MarxManager</name>
-    <vendor>mrmaniacc</vendor>
-
-    <!-- Product and plugin compatibility requirements -->
-    <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <id>marx.plugin</id>
+    <name>MarxMan</name>
+    <vendor email="jraynor1@radford.edu">jraynor</vendor>
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.java</depends>
+    <depends>com.intellij.gradle</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.mrmaniacc.marxmanager.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.mrmaniacc.marxmanager.services.MyProjectService"/>
+        <applicationService serviceImplementation="marx.plugin.state.MarxManConfig"/>
+        <moduleType id="MARX_MODULE_TYPE" implementationClass="marx.plugin.module.MarxModuleType"/>
+        <moduleBuilder id="MARX_MODULE" builderClass="marx.plugin.module.MarxModuleBuilder>"/>
+        <facetType implementation="marx.plugin.platform.facet.MarxFacetType" />
+        <postStartupActivity implementation="marx.plugin.platform.facet.MarxFacetDetector"/>
     </extensions>
 
-    <applicationListeners>
-        <listener class="com.github.mrmaniacc.marxmanager.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
+    <projectListeners>
+        <listener class="marx.plugin.platform.facet.MarxFacetDetector$MarxModuleRootListener"
+                  topic="com.intellij.openapi.roots.ModuleRootListener"/>
+    </projectListeners>
+
+    <actions>
+        <group id="MarxMan.MarxActions" text="Marx">
+            <add-to-group group-id="MainMenu" anchor="last"/>
+            <action id="NewMarxModule" class="marx.plugin.actions.ActionNewModule"
+                    text="New Marx Module" description="Generates a new marx module.">
+                <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt M"/>
+            </action>
+            <action id="marx.plugin.actions.MarxModuleAction" class="marx.plugin.actions.MarxModuleAction"
+                    text="New Marx Project"/>
+        </group>
+
+
+    </actions>
+
 </idea-plugin>

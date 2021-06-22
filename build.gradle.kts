@@ -28,6 +28,7 @@ repositories {
 }
 dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.17.1")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.5.10")
 }
 
 // Configure gradle-intellij-plugin plugin.
@@ -111,4 +112,18 @@ tasks {
         // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
         channels.set(listOf(properties("pluginVersion").split('-').getOrElse(1) { "default" }.split('.').first()))
     }
+}
+
+//This is a portion of ram that is allocated strictly for short lived objects. We allocated 3.25 gigabits of memeory for it
+val youngGenRam = "3328M"
+//This is exactly 5.5G per (1024 = 1 gb, 1024 * 5.5 = 5632)
+val heapRam = "5632M"
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+    freeCompilerArgs = listOf(
+        "-Xinline-classes",
+//        "-XX:NewSize=3072M",
+//        "-Xms$heapRam",
+//        "-Xmx$heapRam"
+    )
 }

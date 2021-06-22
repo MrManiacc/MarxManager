@@ -1,1 +1,1 @@
-rootProject.name = "MarxManager"
+rootProject.name = "MarxMan"
